@@ -3,3 +3,8 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+canvas {
+  border: solid 1px #eee;
+  border-radius: 5px;
+}
