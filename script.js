@@ -1,4 +1,6 @@
 const canvas = document.querySelector("canvas")
+const inputRoom = document.querySelector(".input-room")
+const canvasCover = document.querySelector(".canvas-cover")
 const ctx = canvas.getContext("2d")
 const rect = canvas.getBoundingClientRect();
 const socket = new WebSocket('ws://localhost:3001')
@@ -6,30 +8,33 @@ const socket = new WebSocket('ws://localhost:3001')
 let isDrawing = false
 let selectedBrushSize = 5
 let brushColor = "#000"
+let roomID = ""
 
 canvas.width = 900
 canvas.height = 700
 
-function getPosition(e) {
-  if (e.touches && e.touches.length > 0) {
-    return {
-      x: e.touches[0].pageX - rect.left,
-      y: e.touches[0].pageY - rect.top
-    };
-  } else {
-    const drawdata = {
-      x: e.pageX - rect.left,
-      y: e.pageY - rect.top,
-      selectedBrushSize,
-      brushColor
-    }
-    sendData(JSON.stringify(drawdata))
-    return {
-      x: e.pageX - rect.left,
-      y: e.pageY - rect.top
-    };
+inputRoom.addEventListener("keydown", e => {
+  if(e.key == "Enter") {
+    roomID = e.target.value
+    inputRoom.value = ""
+    inputRoom.classList.add("hidden")
+    canvasCover.classList.remove("hidden")
+    console.log(roomID)
   }
+})
 
+function getPosition(e) {
+  const drawdata = {
+    x: e.pageX - rect.left,
+    y: e.pageY - rect.top,
+    selectedBrushSize,
+    brushColor
+  }
+  sendData(JSON.stringify(drawdata))
+  return {
+    x: e.pageX - rect.left,
+    y: e.pageY - rect.top
+  };
 }
 
 function draw(x, y) {
@@ -51,18 +56,10 @@ function onMouseDown(e) {
   draw(pos.x, pos.y);
 }
 
-function onMouseUp() {
-  isDrawing = false;
-}
-
-function onMouseOut() {
-  isDrawing = false;
-}
-
 canvas.addEventListener("mousemove", onMouseMove);
 canvas.addEventListener("mousedown", onMouseDown);
-canvas.addEventListener("mouseup", onMouseUp);
-canvas.addEventListener("mouseout", onMouseOut);
+canvas.addEventListener("mouseup", () => isDrawing = false);
+canvas.addEventListener("mouseout", () => isDrawing = false);
 
 
 socket.addEventListener('open', (event) => {
