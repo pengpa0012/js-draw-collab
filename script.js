@@ -70,7 +70,9 @@ socket.addEventListener('open', (event) => {
 })
 
 socket.addEventListener('message', (event) => {
-  console.log(event)
+  const data = JSON.parse(event.data)
+  // draw from other client
+  draw(data.x, data.y)
 })
 
 function sendData(data) {
