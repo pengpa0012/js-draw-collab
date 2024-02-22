@@ -1,6 +1,7 @@
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const rect = canvas.getBoundingClientRect();
+const socket = new WebSocket('ws://localhost:3001')
 
 let isDrawing = false
 let selectedBrushSize = 5
@@ -16,8 +17,13 @@ function getPosition(e) {
       y: e.touches[0].pageY - rect.top
     };
   } else {
-    // save this data to send on web socket
-    console.log(e.pageX - rect.left, e.pageY - rect.top, selectedBrushSize, brushColor)
+    const drawdata = {
+      x: e.pageX - rect.left,
+      y: e.pageY - rect.top,
+      selectedBrushSize,
+      brushColor
+    }
+    sendData(JSON.stringify(drawdata))
     return {
       x: e.pageX - rect.left,
       y: e.pageY - rect.top
@@ -57,3 +63,20 @@ canvas.addEventListener("mousemove", onMouseMove);
 canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mouseup", onMouseUp);
 canvas.addEventListener("mouseout", onMouseOut);
+
+
+socket.addEventListener('open', (event) => {
+  console.log('Connected to the server', event)
+})
+
+socket.addEventListener('message', (event) => {
+  console.log(event)
+})
+
+function sendData(data) {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(data);
+  } else {
+    console.error('WebSocket connection is not open');
+  }
+}

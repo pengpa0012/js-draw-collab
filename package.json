@@ -1,0 +1,23 @@
+{
+  "name": "js-draw-collab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pengpa0012/js-draw-collab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pengpa0012/js-draw-collab/issues"
+  },
+  "homepage": "https://github.com/pengpa0012/js-draw-collab#readme",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
