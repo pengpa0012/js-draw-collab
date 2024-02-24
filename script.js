@@ -9,9 +9,20 @@ let isDrawing = false
 let selectedBrushSize = 5
 let brushColor = "#000"
 let roomID = ""
+let rectPos = {
+  left: rect.left,
+  top: rect.top
+}
 
 canvas.width = 900
 canvas.height = 700
+
+window.addEventListener("resize", () => {
+  const updatedRect = canvas.getBoundingClientRect();
+  rectPos.top = updatedRect.top
+  rectPos.left = updatedRect.left
+})
+
 
 inputRoom.addEventListener("keydown", e => {
   if(e.key == "Enter") {
@@ -19,21 +30,21 @@ inputRoom.addEventListener("keydown", e => {
     inputRoom.value = ""
     inputRoom.classList.add("hidden")
     canvasCover.classList.remove("hidden")
-    console.log(roomID)
   }
 })
 
 function getPosition(e) {
   const drawdata = {
-    x: e.pageX - rect.left,
-    y: e.pageY - rect.top,
+    x: e.pageX - rectPos.left,
+    y: e.pageY - rectPos.top,
     selectedBrushSize,
-    brushColor
+    brushColor,
+    room_id: roomID
   }
   sendData(JSON.stringify(drawdata))
   return {
-    x: e.pageX - rect.left,
-    y: e.pageY - rect.top
+    x: e.pageX - rectPos.left,
+    y: e.pageY - rectPos.top
   };
 }
 
