@@ -1,5 +1,6 @@
 const canvas = document.querySelector("canvas")
 const inputRoom = document.querySelector(".input-room")
+const roomUI = document.querySelector(".room")
 const canvasCover = document.querySelector(".canvas-cover")
 const ctx = canvas.getContext("2d")
 const rect = canvas.getBoundingClientRect();
@@ -31,6 +32,7 @@ inputRoom.addEventListener("keydown", e => {
       roomEntered: true,
       room: roomID
     }
+    roomUI.textContent = `Room ID: ${roomID}`
     inputRoom.value = ""
     sendData(JSON.stringify(roomData))
     inputRoom.classList.add("hidden")
