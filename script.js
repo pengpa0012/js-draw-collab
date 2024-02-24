@@ -27,7 +27,12 @@ window.addEventListener("resize", () => {
 inputRoom.addEventListener("keydown", e => {
   if(e.key == "Enter") {
     roomID = e.target.value
+    const roomData = {
+      roomEntered: true,
+      room: roomID
+    }
     inputRoom.value = ""
+    sendData(JSON.stringify(roomData))
     inputRoom.classList.add("hidden")
     canvasCover.classList.remove("hidden")
   }
@@ -39,7 +44,7 @@ function getPosition(e) {
     y: e.pageY - rectPos.top,
     selectedBrushSize,
     brushColor,
-    room_id: roomID
+    room: roomID
   }
   sendData(JSON.stringify(drawdata))
   return {
